@@ -5,6 +5,7 @@ export type DbUser = {
   name: string;
   email: string;
   avatar: string;
+  password: string;
 }
 
 export type DbTodo = {

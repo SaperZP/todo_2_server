@@ -14,8 +14,8 @@ const typeDefs = readFileSync('./schema.graphql', 'utf-8');
 
 const {DB_NAME, DB_URI, JWT_SECRET} = process.env;
 
-const getToken = (user) => {
-  return jwt.sign({id: user.id.toString()}, JWT_SECRET, {
+const getToken = (id: string) => {
+  return jwt.sign({id}, JWT_SECRET, {
     expiresIn: "12h",
   })
 };
@@ -89,6 +89,12 @@ const resolvers: Resolvers = {
 
   Mutation: {
     signUp: async (_, {input}, {db}) => {
+      const emailExists = Boolean(await db.collection("Users").findOne({email: input.email}));
+
+      if (emailExists) {
+        throw new Error('The email is used!');
+      }
+
       const hashedPassword = bcrypt.hashSync(input.password);
       const newUser = {
         ...input,
@@ -103,21 +109,18 @@ const resolvers: Resolvers = {
         avatar: newUser.avatar
       };
 
-      const token = getToken(user);
+      const token = getToken(user.id);
 
       return {user, token};
     },
     signIn: async (_, {input}, {db}) => {
       const dbUser = await db.collection("Users").findOne({email: input.email});
-      if (!dbUser) {
-        throw new Error("Invalid credentials!");
-      }
-
       const isPasswordCorrect = bcrypt.compareSync(
           input.password,
           dbUser.password
       );
-      if (!isPasswordCorrect) {
+
+      if (!dbUser || !isPasswordCorrect) {
         throw new Error("Invalid credentials!");
       }
 
@@ -128,7 +131,7 @@ const resolvers: Resolvers = {
         avatar: dbUser.avatar
       };
 
-      const token = getToken(user);
+      const token = getToken(user.id);
 
       return {user, token};
     },
@@ -167,8 +170,6 @@ const resolvers: Resolvers = {
               {$set: input},
               {returnDocument: "after"}
           );
-
-      console.log('result', result, 'resultEND');
 
       return {
         id: result._id.toString(),
