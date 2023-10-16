@@ -1,17 +1,17 @@
-import { readFileSync } from "node:fs";
-import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
-import { MongoClient, ServerApiVersion } from "mongodb";
+import {readFileSync} from "node:fs";
+import {ApolloServer} from "@apollo/server";
+import {startStandaloneServer} from "@apollo/server/standalone";
+import {MongoClient, ServerApiVersion} from "mongodb";
 import dotenv from "dotenv";
-import { MyContext } from "../types";
-import { getUserFromToken } from "./utils";
+import {MyContext} from "../types";
+import {getUserFromToken} from "./utils";
 import resolvers from "./resolvers/index";
 
 dotenv.config();
 
 const typeDefs = readFileSync("./schema.graphql", "utf-8");
 
-const { DB_NAME, DB_URI, JWT_SECRET } = process.env;
+const {DB_NAME, DB_URI, JWT_SECRET} = process.env;
 
 const start = async () => {
   const mongoClient = new MongoClient(DB_URI, {
@@ -29,12 +29,13 @@ const start = async () => {
     resolvers,
   });
 
-  const { url } = await startStandaloneServer(server, {
-    listen: { port: 4000 },
-    context: async ({ req }) => {
+  const {url} = await startStandaloneServer(server, {
+    listen: {port: 4000},
+    context: async ({req}) => {
+      console.log(req.headers.authorization, 'authorization');
       const user = await getUserFromToken(req.headers.authorization, db, JWT_SECRET);
 
-      return { db, user };
+      return {db, user};
     },
   });
 

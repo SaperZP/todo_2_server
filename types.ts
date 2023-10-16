@@ -21,5 +21,5 @@ export type DbTodo = {
 
 export type MyContext = {
   db: Db;
-  user: DbUser;
+  user: DbUser | null;
 }
