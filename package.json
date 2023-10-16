@@ -8,7 +8,7 @@
     "compile": "tsc",
     "generateResolverTypes": "graphql-codegen --watch",
     "start": "npm run compile && node ./dist/index.js",
-    "watch": "concurrently  --names \"TS,Nodemon\" -c \"bgBlue,bgYellow\" \"tsc -w \" \"nodemon --es-module-specifier-resolution=node ./dist/src/index.js\""
+    "watch": "concurrently  --names \"GQLcodegen,TS,Nodemon\" -c \"bgBlue,bgYellow,bgGreen\" \"graphql-codegen --watch \" \"tsc -w \" \"nodemon --experimental-loader=extensionless ./dist/src/index.js\""
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
     "@types/jsonwebtoken": "^9.0.2",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.3.1",
+    "extensionless": "^1.5.3",
     "graphql": "^16.8.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.0.0"

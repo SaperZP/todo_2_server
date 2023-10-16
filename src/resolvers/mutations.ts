@@ -1,18 +1,18 @@
-import { MutationResolvers } from "../../resolvers-types";
+import {MutationResolvers} from "../../resolvers-types";
 import bcrypt from "bcryptjs";
 import {getToken} from "../utils";
-import {DbTodo} from "../../types";
+import {DbTodo, DbUser} from "../../types";
 import {ObjectId} from "mongodb";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-const { JWT_SECRET } = process.env;
+const {JWT_SECRET} = process.env;
 
 const mutations: MutationResolvers = {
-  signUp: async (_, { input }, { db }) => {
+  signUp: async (_, {input}, {db}) => {
     const emailExists = Boolean(
-        await db.collection("Users").findOne({ email: input.email })
+        await db.collection("Users").findOne({email: input.email})
     );
 
     if (emailExists) {
@@ -35,16 +35,18 @@ const mutations: MutationResolvers = {
 
     const token = getToken(user.id, JWT_SECRET);
 
-    return { user, token };
+    return {user, token};
   },
-  signIn: async (_, { input }, { db }) => {
+  signIn: async (_, {input}, {db}) => {
     const dbUser = await db
         .collection("Users")
-        .findOne({ email: input.email });
-    const isPasswordCorrect = bcrypt.compareSync(
-        input.password,
-        dbUser.password
-    );
+        .findOne<DbUser>({email: input.email});
+
+    const isPasswordCorrect = dbUser?.password && input.password
+        && bcrypt.compareSync(
+            input.password,
+            dbUser.password
+        );
 
     if (!dbUser || !isPasswordCorrect) {
       throw new Error("Invalid credentials!");
@@ -59,17 +61,17 @@ const mutations: MutationResolvers = {
 
     const token = getToken(user.id, JWT_SECRET);
 
-    return { user, token };
+    return {user, token};
   },
 
-  createToDo: async (_, { input }, { db, user }) => {
+  createToDo: async (_, {input}, {db, user}) => {
     if (!user) {
       throw new Error("Authentication error. Please sign in!");
     }
 
     const resp = await db
         .collection("Todos")
-        .insertOne({ ...input, ownerId: user._id });
+        .insertOne({...input, ownerId: user._id});
 
     return {
       id: resp.insertedId.toString(),
@@ -83,7 +85,7 @@ const mutations: MutationResolvers = {
       },
     };
   },
-  updateToDo: async (_, { input, id }, { db, user }) => {
+  updateToDo: async (_, {input, id}, {db, user}) => {
     if (!user) {
       throw new Error("Authentication error. Please sign in!");
     }
@@ -91,9 +93,9 @@ const mutations: MutationResolvers = {
     const result = await db
         .collection<DbTodo>("Todos")
         .findOneAndUpdate(
-            { _id: new ObjectId(id) },
-            { $set: input },
-            { returnDocument: "after" }
+            {_id: new ObjectId(id)},
+            {$set: input},
+            {returnDocument: "after"}
         );
 
     return {
@@ -113,14 +115,14 @@ const mutations: MutationResolvers = {
       },
     };
   },
-  deleteToDo: async (_, { id }, { db, user }) => {
+  deleteToDo: async (_, {id}, {db, user}) => {
     if (!user) {
       throw new Error("Authentication error. Please sign in!");
     }
 
     const result = await db
         .collection("Todos")
-        .deleteOne({ _id: new ObjectId(id) });
+        .deleteOne({_id: new ObjectId(id)});
 
     return result.acknowledged;
   },
