@@ -13,7 +13,7 @@ export type DbTodo = {
   title: string;
   description: string;
   dueDate: string;
-  priority: string;
+  priority: number;
   categoryId: string;
   isDone: boolean;
   ownerId: ObjectId;

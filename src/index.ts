@@ -32,7 +32,6 @@ const start = async () => {
   const {url} = await startStandaloneServer(server, {
     listen: {port: 4000},
     context: async ({req}) => {
-      console.log(req.headers.authorization, 'authorization');
       const user = await getUserFromToken(req.headers.authorization, db, JWT_SECRET);
 
       return {db, user};

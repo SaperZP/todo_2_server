@@ -4,7 +4,7 @@ import {DbUser} from "../types";
 
 export const getToken = (id: string, secret: string) => {
   return jwt.sign({ id }, secret, {
-    expiresIn: "10s",
+    expiresIn: "6h",
   });
 };
 

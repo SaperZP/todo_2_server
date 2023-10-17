@@ -38,7 +38,6 @@ const mutations: MutationResolvers = {
     return {user, token};
   },
   signIn: async (_, {input}, {db}) => {
-    console.log(input, 'input');
 
     const dbUser = await db
         .collection("Users")

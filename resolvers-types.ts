@@ -90,7 +90,7 @@ export type Todo = {
   isDone: Scalars['Boolean']['output'];
   owner: User;
   ownerId: Scalars['ID']['output'];
-  priority?: Maybe<Scalars['String']['output']>;
+  priority?: Maybe<Scalars['Int']['output']>;
   title: Scalars['String']['output'];
 };
 
@@ -107,7 +107,7 @@ export type CreateTodoInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   dueDate?: InputMaybe<Scalars['String']['input']>;
   isDone: Scalars['Boolean']['input'];
-  priority?: InputMaybe<Scalars['String']['input']>;
+  priority?: InputMaybe<Scalars['Int']['input']>;
   title: Scalars['String']['input'];
 };
 
@@ -116,7 +116,7 @@ export type UpdateTodoInput = {
   description?: InputMaybe<Scalars['String']['input']>;
   dueDate?: InputMaybe<Scalars['String']['input']>;
   isDone?: InputMaybe<Scalars['Boolean']['input']>;
-  priority?: InputMaybe<Scalars['String']['input']>;
+  priority?: InputMaybe<Scalars['Int']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -195,6 +195,7 @@ export type ResolversTypes = ResolversObject<{
   AuthUser: ResolverTypeWrapper<AuthUser>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   SignInInput: SignInInput;
@@ -211,6 +212,7 @@ export type ResolversParentTypes = ResolversObject<{
   AuthUser: AuthUser;
   Boolean: Scalars['Boolean']['output'];
   ID: Scalars['ID']['output'];
+  Int: Scalars['Int']['output'];
   Mutation: {};
   Query: {};
   SignInInput: SignInInput;
@@ -249,7 +251,7 @@ export type TodoResolvers<ContextType = MyContext, ParentType extends ResolversP
   isDone?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   owner?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   ownerId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  priority?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  priority?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;

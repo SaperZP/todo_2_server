@@ -10,7 +10,7 @@ type Todo {
     title: String!
     description: String
     dueDate: String
-    priority: String
+    priority: Int
     categoryId: String
     isDone: Boolean!
     ownerId: ID!
@@ -38,7 +38,7 @@ input createTodoInput {
     title: String!
     description: String
     dueDate: String
-    priority: String
+    priority: Int
     categoryId: String
     isDone: Boolean!
 }
@@ -47,7 +47,7 @@ input updateTodoInput {
     title: String
     description: String
     dueDate: String
-    priority: String
+    priority: Int
     categoryId: String
     isDone: Boolean
 }
