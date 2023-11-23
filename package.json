@@ -5,10 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "compile": "tsc",
-    "generateResolverTypes": "graphql-codegen --watch",
-    "start": "npm run compile && node --experimental-loader=extensionless ./dist/src/index.js",
-    "watch": "concurrently  --names \"GQLcodegen,TS,Nodemon\" -c \"bgBlue,bgYellow,bgGreen\" \"graphql-codegen --watch \" \"tsc -w \" \"nodemon --experimental-loader=extensionless ./dist/src/index.js\""
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -16,21 +13,10 @@
   "dependencies": {
     "@apollo/server": "^4.9.3",
     "@parcel/watcher": "^2.3.0",
-    "@types/bcryptjs": "^2.4.3",
-    "@types/jsonwebtoken": "^9.0.2",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.3.1",
-    "extensionless": "^1.5.3",
     "graphql": "^16.8.0",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.0.0"
-  },
-  "devDependencies": {
-    "@graphql-codegen/cli": "^5.0.0",
-    "@graphql-codegen/typescript": "^4.0.1",
-    "@graphql-codegen/typescript-resolvers": "^4.0.1",
-    "@types/node": "^20.5.9",
-    "concurrently": "^8.2.1",
-    "typescript": "^5.2.2"
   }
 }
